@@ -1,4 +1,4 @@
-FROM python:3.13-slim
+FROM python:3.11-slim
 
 RUN addgroup --system appgroup && \
     adduser --system --ingroup appgroup appuser && \
