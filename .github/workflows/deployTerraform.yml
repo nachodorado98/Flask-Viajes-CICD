@@ -26,7 +26,15 @@ jobs:
         cat > terraform/terraform.tfvars <<EOF
         nombre_grupo_recursos       = "Grupo_Viajes_CICD"
         localizacion_grupo_recursos = "northeurope"
+        nombre_log_analytics        = "container-apps-loganalytics"
+        nombre_entorno_apps         = "entorno-container-apps"
+        nombre_app                  = "python-container-app-viajes"
+        nombre_contenedor           = "contenedor-python-viajes"
+        nombre_imagen_contenedor    = "${DOCKERHUB_REPO}:latest"
+        entorno                     = "PRO"
         EOF
+      env:
+        DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_REPO }}
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v3
