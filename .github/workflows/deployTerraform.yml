@@ -3,6 +3,8 @@ name: Terraform Deployment
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'terraform/**'
 
 jobs:
   deploy:
@@ -55,4 +57,5 @@ jobs:
       run: terraform apply -var-file terraform.tfvars -auto-approve
 
       working-directory: ./terraform
+
 
