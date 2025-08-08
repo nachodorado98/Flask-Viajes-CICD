@@ -1,0 +1,77 @@
+name: Container App Deploy
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+    paths:
+      - 'python/**'
+
+jobs:
+  build:
+    name: Docker build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v3   
+
+    - name: Construct Azure credentials
+      id: buildcreds
+      run: |
+        echo "{\"clientId\":\"${{ secrets.AZ_CLIENT_ID }}\",\"clientSecret\":\"${{ secrets.AZ_CLIENT_SECRET }}\",\"subscriptionId\":\"${{ secrets.AZ_SUB_ID }}\",\"tenantId\":\"${{ secrets.AZ_TENANT_ID }}\"}" > creds.json
+        echo "AZ_CREDS=$(cat creds.json)" >> $GITHUB_ENV
+
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
+      with:
+        creds: ${{ env.AZ_CREDS }}
+
+    - name: Verify Azure Login
+      run: |
+        az account show --query "{subscription: name, id: id}" --output table
+
+    - name: Install az containerapp extension
+      run: |
+        az config set extension.use_dynamic_install=yes_without_prompt
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USER }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build Docker Python image
+      run: | 
+        docker build --platform linux --tag ${{ secrets.DOCKERHUB_REPO }}:${{ github.ref_name }} -f python/Dockerfile python/
+        
+    - name: Publish Docker Python image
+      run: |
+        docker push ${{ secrets.DOCKERHUB_REPO }}:${{ github.ref_name }}
+        
+    - name: Update container image in Container App
+      run: |
+        az containerapp update \
+          --name python-container-app-viajes \
+          --resource-group Grupo_Viajes_CICD \
+          --image ${{ secrets.DOCKERHUB_REPO }}:${{ github.ref_name }}
+
+    - name: Wait for deployment to propagate
+      run: sleep 10
+    
+    - name: Verify deployed image
+      run: |
+        latest_image=$(az containerapp show \
+          --name python-container-app-viajes \
+          --resource-group Grupo_Viajes_CICD \
+          --query "properties.template.containers[0].image" \
+          -o tsv)
+    
+        echo "Latest deployed image: $latest_image"
+    
+        if [ "$latest_image" != "${{ secrets.DOCKERHUB_REPO }}:${{ github.ref_name }}" ]; then
+          echo "❌ Error: Image not updated correctly"
+          exit 1
+        else
+          echo "✅ Image updated successfully"
+        fi
