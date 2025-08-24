@@ -39,6 +39,19 @@
         <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
         <span class="tooltip" id="tooltipFecha">Debes tener al menos 18 años</span>
 
+        <div class="container-pais-ciudad">
+            <label for="pais">Pais:</label>
+            <select id="pais" name="pais"  onchange="actualizarCiudades()" required>
+                <option value="" selected disabled hidden>Selecciona un país</option>
+                {% for pais in paises %}
+                    <option value="{{ pais }}">{{ pais }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="ciudad">Ciudad:</label>
+            <select id="ciudad" name="ciudad" required></select>
+        </div>
+
         <button type="submit" id="btn-submit" disabled>Crear Cuenta</button>
     </form>
 
@@ -49,5 +62,6 @@
 <script src="{{ url_for('static', filename='js/fecha_nacimiento.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chequeo_campos.js') }}"></script>
 <script src="{{ url_for('static', filename='js/tooltips.js') }}"></script>
+<script src="{{ url_for('static', filename='js/actualizar_ciudades_pais.js') }}"></script>
 
 {% endblock principal %}

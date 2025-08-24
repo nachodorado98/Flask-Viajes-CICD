@@ -20,6 +20,16 @@ input, select {
     flex-direction: column;
 }
 
+.container-pais-ciudad {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.container-pais-ciudad select {
+    flex: 1;
+}
+
 .tooltip {
     position: absolute;
     background-color: #3498db;
@@ -47,6 +57,10 @@ button:disabled {
 
 @media (max-width: 600px) {
     .container-nombre-apellido {
+        flex-direction: column;
+    }
+
+    .container-pais-ciudad {
         flex-direction: column;
     }
 }

@@ -227,3 +227,4 @@ terraform.rc
 .terraform.*
 
 credenciales.txt
+postgres/data_bbdd/
