@@ -1,7 +1,7 @@
 CREATE TABLE paises (Pais VARCHAR(50) PRIMARY KEY,
 					PaisIngles VARCHAR(50));
 
-\copy paises (Pais, PaisIngles) FROM '/docker-entrypoint-initdb.d/paises.csv' WITH CSV HEADER;
+COPY paises (Pais, PaisIngles) FROM '/docker-entrypoint-initdb.d/paises.csv' WITH CSV HEADER;
 
 CREATE TABLE ciudades (CodCiudad SERIAL PRIMARY KEY,
 						Ciudad VARCHAR(50),
@@ -13,7 +13,7 @@ CREATE TABLE ciudades (CodCiudad SERIAL PRIMARY KEY,
 						Poblacion INT,
 						FOREIGN KEY (Pais) REFERENCES paises (Pais) ON DELETE CASCADE);
 
-\copy ciudades (Ciudad, Latitud, Longitud, Pais, Siglas, Tipo, Poblacion) FROM '/docker-entrypoint-initdb.d/ciudades.csv' WITH CSV HEADER;
+COPY ciudades (Ciudad, Latitud, Longitud, Pais, Siglas, Tipo, Poblacion) FROM '/docker-entrypoint-initdb.d/ciudades.csv' WITH CSV HEADER;
 
 CREATE TABLE usuarios (Usuario VARCHAR(255) PRIMARY KEY,
 						Correo VARCHAR(255),
