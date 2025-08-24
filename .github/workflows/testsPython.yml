@@ -51,8 +51,8 @@ jobs:
       run: |
         CONTAINER_ID=$(docker ps -q --filter "ancestor=postgres:13")
         echo "Postgres container ID: $CONTAINER_ID"
-        docker cp ./postgres/paises.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/paises.csv
-        docker cp ./postgres/ciudades.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/ciudades.csv
+        docker cp ./postgres/data/paises.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/paises.csv
+        docker cp ./postgres/data/ciudades.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/ciudades.csv
 
     - name: Initialize DB with init.sql
       run: |
