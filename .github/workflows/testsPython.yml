@@ -13,6 +13,21 @@ jobs:
     name: Run Pytest
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - name: Check out the repo
       uses: actions/checkout@v3
@@ -28,6 +43,30 @@ jobs:
         pip install -r requirements.txt
       working-directory: ./python
 
+    - name: Wait for PostgreSQL to be ready
+      run: |
+        until pg_isready -h localhost -p 5432; do sleep 1; done
+
+    - name: Copy CSVs into Postgres container
+      run: |
+        CONTAINER_ID=$(docker ps -q --filter "ancestor=postgres:13")
+        echo "Postgres container ID: $CONTAINER_ID"
+        docker cp ./postgres/paises.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/paises.csv
+        docker cp ./postgres/ciudades.csv $CONTAINER_ID:/docker-entrypoint-initdb.d/ciudades.csv
+
+    - name: Initialize DB with init.sql
+      run: |
+        PGPASSWORD="${{ secrets.POSTGRES_PASSWORD }}" psql \
+          -h localhost -p 5432 -U ${{ secrets.POSTGRES_USER }} \
+          -d ${{ secrets.POSTGRES_DB }} \
+          -f ./postgres/init.sql
+
     - name: Run Pytest
+      env:
+        POSTGRES_HOST: localhost
+        POSTGRES_PORT: 5432
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       run: pytest --maxfail=1 --disable-warnings --tb=short
       working-directory: ./python/tests
