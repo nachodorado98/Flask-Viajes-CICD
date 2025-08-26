@@ -7,6 +7,13 @@ on:
       - 'python/**'
   workflow_dispatch:
   workflow_call:
+    secrets:
+      POSTGRES_USER:
+        required: true
+      POSTGRES_PASSWORD:
+        required: true
+      POSTGRES_DB:
+        required: true
 
 jobs:
   test:
