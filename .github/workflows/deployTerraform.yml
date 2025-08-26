@@ -32,9 +32,19 @@ jobs:
         nombre_contenedor           = "contenedor-python-viajes"
         nombre_imagen_contenedor    = "${DOCKERHUB_REPO}:latest"
         entorno                     = "PRO"
+        user                        = "${POSTGRES_USER}"
+        password                    = "${POSTGRES_PASSWORD}"
+        db                          = "${POSTGRES_DB}"
+        host                        = "${POSTGRES_HOST}"
+        port                        = "${POSTGRES_PORT}"
         EOF
       env:
         DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_REPO }}
+        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+        POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v3
