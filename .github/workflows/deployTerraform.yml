@@ -38,7 +38,11 @@ jobs:
         host                        = "${POSTGRES_HOST}"
         port                        = "${POSTGRES_PORT}"
         postgres                    = "${POSTGRES_SERVER}"
-        ip                          = "${IP}"
+        vnet                        = "vnet-nacho"
+        postgres_subnet             = "postgres-subnet"
+        container_app_subnet        = "app-subnet"
+        postgres_dns                = "privatelink.postgres.database.azure.com"
+        postgres_dns_link           = "link-to-vnet"
         EOF
       env:
         DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_REPO }}
@@ -47,8 +51,7 @@ jobs:
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
         POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-        POSTGRES_SERVER: ${{ secrets.POSTGRES_PORT }}
-        IP: ${{ secrets.IP }}
+        POSTGRES_SERVER: ${{ secrets.POSTGRES_SERVER }}
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v3
