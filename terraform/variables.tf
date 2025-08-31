@@ -49,3 +49,11 @@ variable "host" {
 variable "port" {
   description = "Port de la BBDD"
 }
+
+variable "postgres" {
+  description = "El nombre del servidor de Postgres"
+}
+
+variable "ip" {
+  description = "La IP que permite su conexion"
+}

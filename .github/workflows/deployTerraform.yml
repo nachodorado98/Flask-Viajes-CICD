@@ -37,6 +37,8 @@ jobs:
         db                          = "${POSTGRES_DB}"
         host                        = "${POSTGRES_HOST}"
         port                        = "${POSTGRES_PORT}"
+        postgres                    = "${POSTGRES_SERVER}"
+        ip                          = "${IP}"
         EOF
       env:
         DOCKERHUB_REPO: ${{ secrets.DOCKERHUB_REPO }}
@@ -45,6 +47,8 @@ jobs:
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
         POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
+        POSTGRES_SERVER: ${{ secrets.POSTGRES_PORT }}
+        IP: ${{ secrets.IP }}
 
     - name: Install Terraform
       uses: hashicorp/setup-terraform@v3

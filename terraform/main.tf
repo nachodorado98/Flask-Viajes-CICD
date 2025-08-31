@@ -105,3 +105,44 @@ resource "azurerm_container_app" "app" {
     }
   }
 }
+
+resource "azurerm_postgresql_flexible_server" "postgres" {
+  name                   = var.postgres
+  resource_group_name    = azurerm_resource_group.rg.name
+  location               = azurerm_resource_group.rg.location
+  administrator_login    = var.user
+  administrator_password = var.password
+
+  version                      = "14"
+  storage_mb                   = 32768
+  sku_name                     = "GP_Standard_D2s_v3"
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false
+
+  authentication {
+    active_directory_auth_enabled = false
+    password_auth_enabled         = true
+  }
+
+  delegated_subnet_id = null
+
+  zone = "1"
+
+  public_network_access_enabled = true
+
+  depends_on = [azurerm_resource_group.rg]
+}
+
+resource "azurerm_postgresql_flexible_server_database" "app_db" {
+  name      = var.db
+  server_id = azurerm_postgresql_flexible_server.postgres.id
+  charset   = "UTF8"
+  collation = "en_US.utf8"
+}
+
+resource "azurerm_postgresql_flexible_server_firewall_rule" "my_ip" {
+  name             = "AllowMyIP"
+  server_id        = azurerm_postgresql_flexible_server.postgres.id
+  start_ip_address = var.ip
+  end_ip_address   = var.ip
+}
