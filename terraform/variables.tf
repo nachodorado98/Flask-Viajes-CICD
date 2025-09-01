@@ -49,27 +49,3 @@ variable "host" {
 variable "port" {
   description = "Port de la BBDD"
 }
-
-variable "postgres" {
-  description = "El nombre del servidor de Postgres"
-}
-
-variable "vnet" {
-  description = "El nombre de la VNET"
-}
-
-variable "postgres_subnet" {
-  description = "El nombre de la subnet de Postgres"
-}
-
-variable "container_app_subnet" {
-  description = "El nombre de la subnet de la Container App"
-}
-
-variable "postgres_dns" {
-  description = "El nombdre del DNS de Postgres"
-}
-
-variable "postgres_dns_link" {
-  description = "El nombre del link del DNS de Postgres"
-}
