@@ -27,29 +27,31 @@
         <div class="container-nombre-apellido">
             <div class="campo">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
+                <input type="text" id="nombre" name="nombre" required autocomplete="off">
             </div>
             <div class="campo">
                 <label for="apellido">Apellido:</label>
-                <input type="text" id="apellido" name="apellido" required>
+                <input type="text" id="apellido" name="apellido" required autocomplete="off">
             </div>
         </div>
 
         <label for="fecha-nacimiento">Fecha Nacimiento:</label>
-        <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required>
+        <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" required autocomplete="off">
         <span class="tooltip" id="tooltipFecha">Debes tener al menos 18 años</span>
 
         <div class="container-pais-ciudad">
-            <label for="pais">Pais:</label>
-            <select id="pais" name="pais"  onchange="actualizarCiudades()" required>
-                <option value="" selected disabled hidden>Selecciona un país</option>
+            <label for="pais">País:</label>
+            <input list="lista-paises" id="pais" name="pais" onchange="actualizarCiudades()" required autocomplete="off">
+            <datalist id="lista-paises">
                 {% for pais in paises %}
-                    <option value="{{ pais }}">{{ pais }}</option>
+                    <option value="{{ pais }}">
                 {% endfor %}
-            </select>
+            </datalist>
 
             <label for="ciudad">Ciudad:</label>
-            <select id="ciudad" name="ciudad" required></select>
+            <input list="lista-ciudades" id="ciudad" name="ciudad" required autocomplete="off">
+            <datalist id="lista-ciudades">
+            </datalist>
         </div>
 
         <button type="submit" id="btn-submit" disabled>Crear Cuenta</button>

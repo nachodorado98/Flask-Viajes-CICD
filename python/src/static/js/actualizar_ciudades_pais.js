@@ -1,22 +1,21 @@
 function actualizarCiudades() {
-    var paisSeleccionado = document.getElementById("pais").value;
-    var ciudadDropdown = document.getElementById("ciudad");
+    
+    const paisSeleccionado = document.getElementById("pais").value;
+    const listaCiudades = document.getElementById("lista-ciudades");
+    const ciudadInput = document.getElementById("ciudad");
 
-    while (ciudadDropdown.options.length > 0) {
-        ciudadDropdown.remove(0);
-    }
+    ciudadInput.value = "";
+
+    listaCiudades.innerHTML = "";
 
     if (paisSeleccionado) {
-
         fetch("/ciudades_pais?pais=" + encodeURIComponent(paisSeleccionado))
             .then(response => response.json())
             .then(ciudades => {
-
                 ciudades.forEach(function(ciudad) {
-                    var option = document.createElement("option");
-                    option.text = ciudad;
+                    const option = document.createElement("option");
                     option.value = ciudad;
-                    ciudadDropdown.add(option);
+                    listaCiudades.appendChild(option);
                 });
             })
             .catch(error => console.error("Error al obtener ciudades:", error));

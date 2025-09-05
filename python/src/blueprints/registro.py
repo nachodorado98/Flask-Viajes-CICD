@@ -13,7 +13,8 @@ def registro():
 
 	con=Conexion()
 
-	paises=con.obtenerPaises()
+	# paises=con.obtenerPaises()
+	paises=["España"]
 
 	con.cerrarConexion()
 
