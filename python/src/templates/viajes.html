@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {% block link %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/viajes.css') }}">
+  {% endblock link %}
+
+  <link rel="icon" href="{{ url_for('static', filename='iconos/viajes.png') }}" type="image/x-icon">
+
+  <title>Viajes</title>
+
+</head>
+<body>
+  
+
+  {% block principal %}
+    
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="/viajes" class="logo">
+        <img src="{{ url_for('static', filename='iconos/home.png') }}" alt="Inicio">
+      </a>
+      <a href="#">Mapa</a>
+    </div>
+
+    <div class="nav-right">
+      <div class="profile-menu">
+        <img src="{{ url_for('static', filename='iconos/usuario.png') }}" alt="Perfil" class="profile-icon" id="profileBtn">
+        <ul class="dropdown" id="dropdownMenu">
+          <li><a href="#">Mi Perfil</a></li>
+          <li><a href="#">Ajustes</a></li>
+          <li><a href="/logout">Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-content">
+
+    {% if viajes %}
+
+        <h1>Explora tus viajes, {{ nombre.title() }}</h1>
+
+        <div class="card-container">
+          {% for viaje in viajes %}
+              <div class="card">
+                <p>{{ viaje }}</p>
+              </div>
+          {% endfor %}
+        </div>
+
+    {% else %}
+
+        <h1>Aun no tienes ningun viaje que explorar, {{ nombre.title() }}</h1>
+
+    {% endif %}
+
+
+  </main>
+
+  {% endblock principal %}
+
+  <footer>
+    <p>&copy; 2025 Viajes App. Todos los derechos reservados.</p>
+  </footer>
+
+  <script src="{{ url_for('static', filename='js/perfil.js') }}"></script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 import psycopg2
 from psycopg2.extras import RealDictCursor
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from .confconexion import *
 
@@ -140,3 +140,35 @@ class Conexion:
 		admin=self.c.fetchone()
 
 		return False if admin is None else admin["admin"]
+
+	# Metodo para obtener los viajes de un usuario
+	def obtenerViajes(self, usuario:str)->[List[Optional[tuple]]]:
+
+		self.c.execute("""SELECT v.CodViaje, v.Usuario, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
+							FROM Viajes v
+							JOIN Ciudades c
+							ON v.CodCiudad=c.CodCiudad
+							WHERE Usuario=%s""",
+							(usuario,))
+
+		viajes=self.c.fetchall()
+
+		# Funcion para convertir los datos de los viajes en el formato deseado
+		def convertirDatos(datos:Dict)->tuple:
+
+			ida=datos["ida"].strftime("%d/%m/%Y")
+
+			vuelta=datos["vuelta"].strftime("%d/%m/%Y")
+
+			return datos["codviaje"], datos["usuario"], datos["ciudad"], datos["codciudad"], datos["pais"], ida, vuelta
+
+		return list(map(convertirDatos, viajes))
+
+	# Metodo para insertar un viaje de un usuario
+	def insertarViaje(self, codviaje:str, usuario:str, codciudad:int, ida:str, vuelta:str, hotel:str, web:str, transporte:str, comentario:str, imagen:str)->None:
+
+		self.c.execute("""INSERT INTO Viajes VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+							(codviaje, usuario, codciudad, ida, vuelta, hotel, web, transporte, comentario, imagen))
+
+
+		self.confirmar()

@@ -44,3 +44,16 @@ WHERE (ciudad, pais, CodCiudad) IN (SELECT ciudad, pais, CodCiudad FROM ciudades
 													        GROUP BY ciudad, pais HAVING COUNT(*)>1)
 AND CodCiudad NOT IN (SELECT MIN(CodCiudad) FROM ciudades
 				        GROUP BY ciudad, pais HAVING COUNT(*)>1));
+
+CREATE TABLE viajes (CodViaje VARCHAR(265) PRIMARY KEY,
+						Usuario VARCHAR(255),
+						CodCiudad INT,
+						Ida DATE,
+						Vuelta DATE,
+						Hotel VARCHAR(255),
+						Web VARCHAR(255),
+						Transporte VARCHAR(255),
+						Comentario VARCHAR(600),
+						Imagen VARCHAR(255),
+						FOREIGN KEY (CodCiudad) REFERENCES ciudades (CodCiudad),
+						FOREIGN KEY (Usuario) REFERENCES usuarios (Usuario) ON DELETE CASCADE);
