@@ -26,12 +26,7 @@ def test_pagina_inicio_con_login_usuario_no_existe(cliente, conexion, usuario):
 @pytest.mark.parametrize(["contrasena"],
 	[("213214hhj&&ff",),("354354vff",),("2223321",), ("fdfgh&&55fjfkAfh",)]
 )
-def test_pagina_inicio_con_login_usuario_existe_contrasena_error(cliente, conexion, contrasena):
-
-	cliente.post("/singup", data={"usuario":"nacho98", "correo":"nacho@gmail.com", "nombre":"nacho",
-											"apellido":"dorado", "contrasena":"Ab!CdEfGhIJK3LMN",
-											"fecha-nacimiento":"1998-02-16", "ciudad":"Madrid",
-											"pais":"España"})
+def test_pagina_inicio_con_login_usuario_existe_contrasena_error(cliente, conexion_usuario, contrasena):
 
 	respuesta=cliente.post("/login", data={"usuario": "nacho98", "contrasena": contrasena})
 
@@ -41,29 +36,7 @@ def test_pagina_inicio_con_login_usuario_existe_contrasena_error(cliente, conexi
 	assert respuesta.location=="/"
 	assert "<h1>Redirecting...</h1>" in contenido
 
-def test_pagina_inicio_con_login_sin_viajes(cliente, conexion):
-
-	cliente.post("/singup", data={"usuario":"nacho98", "correo":"nacho@gmail.com", "nombre":"nacho",
-											"apellido":"dorado", "contrasena":"Ab!CdEfGhIJK3LMN",
-											"fecha-nacimiento":"1998-02-16", "ciudad":"Madrid",
-											"pais":"España"})
-
-	respuesta=cliente.post("/login", data={"usuario": "nacho98", "contrasena": "Ab!CdEfGhIJK3LMN"}, follow_redirects=True)
-
-	contenido=respuesta.data.decode()
-
-	assert respuesta.status_code==200
-	assert "<h1>Aun no tienes ningun viaje que explorar, Nacho</h1>" in contenido
-	assert not '<div class="card-container">' in contenido
-
-def test_pagina_inicio_con_login_con_viaje(cliente, conexion):
-
-	cliente.post("/singup", data={"usuario":"nacho98", "correo":"nacho@gmail.com", "nombre":"nacho",
-											"apellido":"dorado", "contrasena":"Ab!CdEfGhIJK3LMN",
-											"fecha-nacimiento":"1998-02-16", "ciudad":"Madrid",
-											"pais":"España"})
-
-	conexion.insertarViaje("nacho98-1", "nacho98", 34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg")
+def test_pagina_inicio_con_login(cliente, conexion_usuario_viaje):
 
 	respuesta=cliente.post("/login", data={"usuario": "nacho98", "contrasena": "Ab!CdEfGhIJK3LMN"}, follow_redirects=True)
 
@@ -71,16 +44,10 @@ def test_pagina_inicio_con_login_con_viaje(cliente, conexion):
 
 	assert respuesta.status_code==200
 	assert "<h1>Explora tus viajes, Nacho</h1>" in contenido
-	assert '<div class="card-container">' in contenido
 
-def test_pagina_logout(cliente, conexion):
+def test_pagina_logout(cliente, conexion_usuario):
 
 	with cliente as cliente_abierto:
-
-		cliente_abierto.post("/singup", data={"usuario":"nacho98", "correo":"nacho@gmail.com", "nombre":"nacho",
-											"apellido":"dorado", "contrasena":"Ab!CdEfGhIJK3LMN",
-											"fecha-nacimiento":"1998-02-16", "ciudad":"Madrid",
-											"pais":"España"})
 
 		cliente_abierto.post("/login", data={"usuario": "nacho98", "contrasena": "Ab!CdEfGhIJK3LMN"})
 

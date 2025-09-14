@@ -107,19 +107,68 @@ body {
 .card-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  gap: 30px;
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 0;
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  background: linear-gradient(145deg, #ffffff, #f4f7fa);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 35px 25px;
+  text-align: center;
+  position: relative;
+  min-height: 220px;
+  cursor: pointer;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: #3897f0;
+  border-radius: 16px 0 0 16px;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px) scale(1.03);
+  box-shadow: 0 16px 28px rgba(0,0,0,0.25);
+}
+
+.card-content h3.ciudad {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 14px;
+}
+
+.card-content .pais {
+  font-size: 1.1rem;
+  color: #3897f0;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-content .fecha {
+  font-size: 1rem;
+  color: #555;
+  background: #eef3f8;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 500;
 }
 
 footer {
@@ -147,11 +196,13 @@ footer {
 @media (max-width: 900px) {
   .card-container {
     grid-template-columns: repeat(2, 1fr);
+    width: 90%;
   }
 }
 
 @media (max-width: 600px) {
   .card-container {
     grid-template-columns: 1fr;
+    width: 95%;
   }
 }

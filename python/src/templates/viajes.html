@@ -30,9 +30,9 @@
       <div class="profile-menu">
         <img src="{{ url_for('static', filename='iconos/usuario.png') }}" alt="Perfil" class="profile-icon" id="profileBtn">
         <ul class="dropdown" id="dropdownMenu">
-          <li><a href="#">Mi Perfil</a></li>
+          <li><a href="#">{{ usuario }}</a></li>
           <li><a href="#">Ajustes</a></li>
-          <li><a href="/logout">Cerrar Sesión</a></li>
+          <li><a href="/logout">Salir</a></li>
         </ul>
       </div>
     </div>
@@ -46,11 +46,16 @@
 
         <div class="card-container">
           {% for viaje in viajes %}
-              <div class="card">
-                <p>{{ viaje }}</p>
+            <div class="card">
+              <div class="card-content">
+                <h3 class="ciudad">{{ viaje[2] }}</h3>
+                <p class="pais">{{ viaje[4] }}</p>
+                <p class="fecha">Fecha: {{ viaje[5] }}</p>
               </div>
+            </div>
           {% endfor %}
         </div>
+
 
     {% else %}
 

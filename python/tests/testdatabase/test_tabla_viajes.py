@@ -14,15 +14,13 @@ def test_tabla_viajes_vacia(conexion):
 		(2438, "2023-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "asdfghjkl", "madrid_españa_jjjjkjbj.png")
 	]
 )
-def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen):
+def test_insertar_viaje(conexion_usuario, codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen):
 
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
+	conexion_usuario.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen)
 
-	conexion.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, ida, vuelta, hotel, web, transporte, comentario, imagen)
+	conexion_usuario.c.execute("SELECT * FROM viajes")
 
-	conexion.c.execute("SELECT * FROM viajes")
-
-	viajes=conexion.c.fetchall()
+	viajes=conexion_usuario.c.fetchall()
 
 	viaje=viajes[0]
 
@@ -36,17 +34,15 @@ def test_insertar_viaje(conexion, codigo_ciudad, ida, vuelta, hotel, web, transp
 	assert viaje["comentario"]==comentario
 	assert viaje["imagen"]==imagen
 
-def test_insertar_viajes(conexion):
-
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
+def test_insertar_viajes(conexion_usuario):
 
 	for numero in range(5):
 
-		conexion.insertarViaje(f"nacho98-{numero}", "nacho98", 34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg"),
+		conexion_usuario.insertarViaje(f"nacho98-{numero}", "nacho98", 34, "2019-06-22", "2019-06-22", "Hotel", "Web", "Transporte", "comentario", "imagen.jpg"),
 
-	conexion.c.execute("SELECT * FROM viajes")
+	conexion_usuario.c.execute("SELECT * FROM viajes")
 
-	viajes=conexion.c.fetchall()
+	viajes=conexion_usuario.c.fetchall()
 
 	assert len(viajes)==5
 
@@ -54,43 +50,35 @@ def test_obtener_viajes_no_existe_usuario(conexion):
 
 	assert not conexion.obtenerViajes("nacho98")
 
-def test_obtener_viajes_no_existentes(conexion):
+def test_obtener_viajes_no_existentes(conexion_usuario):
 
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
+	assert not conexion_usuario.obtenerViajes("nacho98")
 
-	assert not conexion.obtenerViajes("nacho98")
+def test_obtener_viajes_otro_usuario(conexion_usuario):
 
-def test_obtener_viajes_otro_usuario(conexion):
+	conexion_usuario.insertarViaje("nacho98-34", "nacho98", 34, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
 
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
-
-	conexion.insertarViaje("nacho98-34", "nacho98", 34, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
-
-	assert not conexion.obtenerViajes("nacho")
+	assert not conexion_usuario.obtenerViajes("nacho")
 
 @pytest.mark.parametrize(["codigo_ciudad"],
 	[(1,),(22,),(2019,),(13,)]
 )
-def test_obtener_viajes_existente(conexion, codigo_ciudad):
+def test_obtener_viajes_existente(conexion_usuario, codigo_ciudad):
 
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
+	conexion_usuario.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
 
-	conexion.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
-
-	viajes=conexion.obtenerViajes("nacho98")
+	viajes=conexion_usuario.obtenerViajes("nacho98")
 
 	assert len(viajes)==1
 	assert viajes[0][3]==codigo_ciudad
 
-def test_obtener_viajes_existentes(conexion):
-
-	conexion.insertarUsuario("nacho98", "nacho@correo", "1234", "nacho", "dorado", "1998-02-16", 103)
+def test_obtener_viajes_existentes(conexion_usuario):
 
 	for codigo_ciudad in range(1, 11):
 
-		conexion.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
+		conexion_usuario.insertarViaje(f"nacho98-{codigo_ciudad}", "nacho98", codigo_ciudad, '2019-06-22', '2019-06-22', 'Hotel', 'Web', 'Transporte', 'Comentario', 'Imagen')
 
-	viajes=conexion.obtenerViajes("nacho98")
+	viajes=conexion_usuario.obtenerViajes("nacho98")
 
 	assert len(viajes)==10
 

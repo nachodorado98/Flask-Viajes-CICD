@@ -148,7 +148,8 @@ class Conexion:
 							FROM Viajes v
 							JOIN Ciudades c
 							ON v.CodCiudad=c.CodCiudad
-							WHERE Usuario=%s""",
+							WHERE Usuario=%s
+							ORDER BY v.Ida DESC""",
 							(usuario,))
 
 		viajes=self.c.fetchall()
