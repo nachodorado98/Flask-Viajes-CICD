@@ -144,7 +144,7 @@ class Conexion:
 	# Metodo para obtener los viajes de un usuario
 	def obtenerViajes(self, usuario:str)->[List[Optional[tuple]]]:
 
-		self.c.execute("""SELECT v.CodViaje, v.Usuario, c.Ciudad, c.CodCiudad, c.Pais, v.Ida, v.Vuelta
+		self.c.execute("""SELECT v.CodViaje, v.Usuario, c.Ciudad, c.CodCiudad, c.Pais, c.Siglas, v.Ida, v.Vuelta
 							FROM Viajes v
 							JOIN Ciudades c
 							ON v.CodCiudad=c.CodCiudad
@@ -161,7 +161,7 @@ class Conexion:
 
 			vuelta=datos["vuelta"].strftime("%d/%m/%Y")
 
-			return datos["codviaje"], datos["usuario"], datos["ciudad"], datos["codciudad"], datos["pais"], ida, vuelta
+			return datos["codviaje"], datos["usuario"], datos["ciudad"], datos["codciudad"], datos["pais"], datos["siglas"], ida, vuelta
 
 		return list(map(convertirDatos, viajes))
 

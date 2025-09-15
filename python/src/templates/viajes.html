@@ -46,11 +46,11 @@
 
         <div class="card-container">
           {% for viaje in viajes %}
-            <div class="card">
+            <div class="card" style="--bandera: url('{{ url_for('static', filename='imagenes/banderas/' ~ viaje[5] ~ '.png') }}')">
               <div class="card-content">
                 <h3 class="ciudad">{{ viaje[2] }}</h3>
                 <p class="pais">{{ viaje[4] }}</p>
-                <p class="fecha">Fecha: {{ viaje[5] }}</p>
+                <p class="fecha">Fecha: {{ viaje[6] }}</p>
               </div>
             </div>
           {% endfor %}

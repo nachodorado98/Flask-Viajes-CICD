@@ -132,10 +132,19 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  width: 6px;
+  width: 75px;
   height: 100%;
-  background: #3897f0;
+  background-image: var(--bandera);
+  background-size: cover;
+  background-position: center;
   border-radius: 16px 0 0 16px;
+}
+
+.card-content {
+  margin-left: 70px;
+  text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
 .card:hover {
