@@ -70,23 +70,6 @@ def login():
 
 	return redirect(siguiente or "/viajes")
 
-@bp_login.route("/viajes")
-@login_required
-def pagina_viajes():
-
-	usuario=current_user.id
-
-	con=Conexion()
-
-	viajes=con.obtenerViajes(usuario)
-
-	con.cerrarConexion()
-
-	return render_template("viajes.html",
-							usuario=usuario,
-							nombre=current_user.nombre,
-							viajes=viajes)
-
 @bp_login.route("/logout")
 @login_required
 def logout():

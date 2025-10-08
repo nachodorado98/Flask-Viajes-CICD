@@ -1,0 +1,85 @@
+{% extends "viajes.html" %}
+
+{% block link %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/anadir_viaje.css') }}">
+{% endblock link %}
+
+{% block principal %}
+<div class="main-content">
+    <h1>Añadir Nuevo Viaje</h1>
+
+    <div class="container viaje-form-container">
+        <form method="POST" action="#" autocomplete="off" novalidate>
+            
+            <div class="form-grid">
+                <div class="campo">
+                    <label for="pais">País:</label>
+                    <input list="lista-paises" id="pais" name="pais" onchange="actualizarCiudades()" required>
+                    <datalist id="lista-paises">
+                        {% for pais in paises %}
+                        <option value="{{ pais }}">
+                        {% endfor %}
+                    </datalist>
+                </div>
+                <div class="campo">
+                    <label for="ciudad">Ciudad:</label>
+                    <input list="lista-ciudades" id="ciudad" name="ciudad" required>
+                    <datalist id="lista-ciudades"></datalist>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="campo">
+                    <label for="fecha-ida">Fecha de ida:</label>
+                    <input type="date" id="fecha-ida" name="fecha-ida" required max="{{ fecha_hoy }}">
+                </div>
+                <div class="campo">
+                    <label for="fecha-vuelta">Fecha de vuelta:</label>
+                    <input type="date" id="fecha-vuelta" name="fecha-vuelta" required max="{{ fecha_hoy }}">
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="campo">
+                    <label for="hotel">Nombre del hotel:</label>
+                    <input type="text" id="hotel" name="hotel">
+                </div>
+                <div class="campo">
+                    <label for="web">Página web:</label>
+                    <input type="text" id="web" name="web" placeholder="www.ejemplo.com">
+                </div>
+            </div>
+
+			<div class="campo">
+			    <label for="transporte">Transporte:</label>
+			    <select id="transporte" name="transporte" required>
+			        <option value="" disabled selected hidden>Selecciona un transporte</option>
+			        <option value="avion">Avión</option>
+			        <option value="tren">Tren</option>
+			        <option value="coche">Coche</option>
+			        <option value="bus_urbano">Autobús Urbano</option>
+			        <option value="bus_interurbano">Autobús Interurbano</option>
+			        <option value="bus">Autobús</option>
+			        <option value="renfe">Renfe</option>
+			        <option value="coche_compartido">Coche Compartido</option>
+			        <option value="pie">Pie</option>
+			    </select>
+			</div>
+
+            <div class="campo">
+                <label for="comentario">Comentario:</label>
+                <textarea id="comentario" name="comentario" rows="4" placeholder="Añade tu comentario sobre el viaje..."></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Añadir Viaje</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{{ url_for('static', filename='js/actualizar_ciudades_pais.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chequeo_fechas_viaje.js') }}"></script>
+
+{% endblock principal %}

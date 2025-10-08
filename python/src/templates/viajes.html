@@ -15,8 +15,6 @@
 </head>
 <body>
   
-
-  {% block principal %}
     
   <nav class="navbar">
     <div class="nav-left">
@@ -38,6 +36,8 @@
     </div>
   </nav>
 
+  {% block principal %}
+
   <main class="main-content">
 
     {% if viajes %}
@@ -58,11 +58,11 @@
 
 
     {% else %}
-
+      <div class="no-viajes-container">
         <h1>Aun no tienes ningun viaje que explorar, {{ nombre.title() }}</h1>
-
+        <a href="/anadir_viaje" class="btn">Añadir un nuevo viaje</a>
+      </div>
     {% endif %}
-
 
   </main>
 
