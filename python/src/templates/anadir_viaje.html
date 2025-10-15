@@ -10,7 +10,7 @@
     <h1>Añadir Nuevo Viaje</h1>
 
     <div class="container viaje-form-container">
-        <form method="POST" action="#" autocomplete="off" novalidate>
+        <form id="form-viaje" autocomplete="off" novalidate>
             
             <div class="form-grid">
                 <div class="campo">
@@ -51,21 +51,21 @@
                 </div>
             </div>
 
-			<div class="campo">
-			    <label for="transporte">Transporte:</label>
-			    <select id="transporte" name="transporte" required>
-			        <option value="" disabled selected hidden>Selecciona un transporte</option>
-			        <option value="avion">Avión</option>
-			        <option value="tren">Tren</option>
-			        <option value="coche">Coche</option>
-			        <option value="bus_urbano">Autobús Urbano</option>
-			        <option value="bus_interurbano">Autobús Interurbano</option>
-			        <option value="bus">Autobús</option>
-			        <option value="renfe">Renfe</option>
-			        <option value="coche_compartido">Coche Compartido</option>
-			        <option value="pie">Pie</option>
-			    </select>
-			</div>
+            <div class="campo">
+                <label for="transporte">Transporte:</label>
+                <select id="transporte" name="transporte" required>
+                    <option value="" disabled selected hidden>Selecciona un transporte</option>
+                    <option value="avion">Avión</option>
+                    <option value="tren">Tren</option>
+                    <option value="coche">Coche</option>
+                    <option value="bus_urbano">Autobús Urbano</option>
+                    <option value="bus_interurbano">Autobús Interurbano</option>
+                    <option value="bus">Autobús</option>
+                    <option value="renfe">Renfe</option>
+                    <option value="coche_compartido">Coche Compartido</option>
+                    <option value="pie">Pie</option>
+                </select>
+            </div>
 
             <div class="campo">
                 <label for="comentario">Comentario:</label>
@@ -73,13 +73,29 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit" class="btn">Añadir Viaje</button>
+                <button type="submit" id="btn-submit" class="btn">Añadir Viaje</button>
             </div>
         </form>
     </div>
 </div>
 
+<div id="resumen-modal" class="modal">
+    <div class="modal-content">
+        <span id="cerrar-modal" class="cerrar">&times;</span>
+        <h2>Resumen del Viaje</h2>
+
+        <div id="resumen-detalle" class="resumen-grid"></div>
+
+        <div class="modal-actions">
+            <button id="confirmar" class="btn">Confirmar</button>
+            <button id="editar" class="btn btn-secundario">Editar</button>
+        </div>
+    </div>
+</div>
+
 <script src="{{ url_for('static', filename='js/actualizar_ciudades_pais.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chequeo_fechas_viaje.js') }}"></script>
+<script src="{{ url_for('static', filename='js/resumen_viaje.js') }}"></script>
+<script src="{{ url_for('static', filename='js/chequeo_campos_viaje.js') }}"></script>
 
 {% endblock principal %}

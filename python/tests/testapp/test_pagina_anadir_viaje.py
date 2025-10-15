@@ -22,3 +22,6 @@ def test_pagina_anadir_viaje(cliente):
 		assert respuesta.status_code==200
 		assert "<h1>Añadir Nuevo Viaje</h1>" in contenido
 		assert '<div class="container viaje-form-container">' in contenido
+		assert '<div id="resumen-modal" class="modal">' in contenido
+		assert '<h2>Resumen del Viaje</h2>' in contenido
+		assert '<div id="resumen-detalle" class="resumen-grid"></div>' in contenido
